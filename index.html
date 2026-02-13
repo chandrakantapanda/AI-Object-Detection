@@ -48,6 +48,11 @@
     #loader {
       margin-top: 30px;
     }
+
+    /* Show video if you want to debug */
+    #video {
+      display: none;
+    }
   </style>
 </head>
 
@@ -64,11 +69,9 @@
     </div>
   </div>
 
-  <!-- Hidden video (required for camera stream) -->
-  <video playsinline autoplay muted id="video" style="display:none;"></video>
-
+  <!-- Video feed (hidden, used for canvas) -->
+  <video id="video" playsinline autoplay muted></video>
   <canvas id="canvas"></canvas>
-
   <div id="objectCount">Objects Detected: 0</div>
 
   <div class="container">
@@ -104,21 +107,36 @@ let fps = 30;
 let cameraReady = false;
 
 /* Load COCO-SSD model */
-ml5.objectDetector('cocossd', {}, function() {
+ml5.objectDetector('cocossd', {}, function(m) {
+  model = m;
   console.log("Model Loaded");
   modelLoaded = true;
   document.getElementById("loader").style.display = "none";
 });
 
-/* Start Camera */
-navigator.mediaDevices.getUserMedia({ video: true })
-.then(stream => {
-  video.srcObject = stream;
-  cameraReady = true;
-})
-.catch(err => {
-  alert("Camera permission required!");
-});
+/* Camera constraints */
+const constraints = {
+  video: { facingMode: "environment" }, // change to "user" for front camera
+  audio: false
+};
+
+/* Start camera */
+navigator.mediaDevices.getUserMedia(constraints)
+  .then(stream => {
+    video.srcObject = stream;
+    cameraReady = true;
+
+    /* Wait for metadata to load before drawing canvas */
+    video.addEventListener('loadedmetadata', () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      draw(); // Start drawing loop
+    });
+  })
+  .catch(err => {
+    console.error("Camera error:", err);
+    alert("Camera permission denied or not supported on this device.");
+  });
 
 /* Toggle AI */
 document.getElementById("toggleAI").addEventListener("click", function() {
@@ -127,12 +145,12 @@ document.getElementById("toggleAI").addEventListener("click", function() {
   this.classList.toggle("red");
 });
 
-/* FPS Change */
+/* FPS slider */
 document.getElementById("fps").addEventListener("input", function() {
   fps = this.value;
 });
 
-/* Capture Frame */
+/* Capture screenshot */
 document.getElementById("captureBtn").addEventListener("click", function() {
   const link = document.createElement("a");
   link.download = "capture.png";
@@ -140,19 +158,14 @@ document.getElementById("captureBtn").addEventListener("click", function() {
   link.click();
 });
 
-/* Draw Loop */
+/* Drawing loop */
 function draw() {
-  if (cameraReady && video.videoWidth > 0) {
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    ctx.drawImage(video, 0, 0);
+  if (cameraReady) {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     if (aiEnabled && modelLoaded) {
       model.detect(canvas, function(err, results) {
         if (results) {
-
           document.getElementById("objectCount").innerText =
             "Objects Detected: " + results.length;
 
@@ -175,11 +188,8 @@ function draw() {
       });
     }
   }
-
   setTimeout(draw, 1000 / fps);
 }
-
-draw();
 </script>
 
 </body>
