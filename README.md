@@ -20,7 +20,7 @@ It uses your device camera to detect objects in real-time and draws bounding box
 
 ## 🖼️ Preview
 
-<a href="https://ibb.co/JCNgfJr"><img src="https://i.ibb.co/3kwQDZS/preview-combined.jpg" alt="preview-combined" width="100%"></a>
+(keyboard.PNG) (mouse.PNG)
 
 ---
 
