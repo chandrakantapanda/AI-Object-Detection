@@ -26,7 +26,7 @@ It uses your device camera to detect objects in real-time and draws bounding box
 
 ## 💪 Try it
 
-Test the live demo here: [https://woody.pizza/tensorflow/object-detection/](https://woody.pizza/tensorflow/object-detection/)  
+Test the live demo here: [https://chandrakantapanda.github.io/AI-Object-Detection/)  
 
 *(Open in Chrome or Firefox for camera support)*
 
