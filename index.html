@@ -127,7 +127,8 @@ function startCamera() {
 
 function isReady() {
   if (modelIsLoaded && cameraAvailable) {
-    loadingText.style.display = "none";
+    // loadingText.style.display = "none";
+    loadingText.innerText = "Ai Object Detection";
     aiToggle.disabled = false;
     return true;
   }
