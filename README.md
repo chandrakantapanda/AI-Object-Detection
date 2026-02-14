@@ -20,8 +20,7 @@ It uses your device camera to detect objects in real-time and draws bounding box
 
 ## 🖼️ Preview
 
-![AI-Object-Detection
-](keyboard.PNG) (mouse.PNG)
+![AI-Object-Detection](keyboard.PNG) (mouse.PNG)
 
 ---
 
