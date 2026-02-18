@@ -6,6 +6,11 @@ It uses your device camera to detect objects in real-time and draws bounding box
 
 ---
 
+## 📹 YouTube Tutorial
+🎥 Watch the full Shorts video here:  
+👉 [**AI-Object-Detection**](https://youtube.com/shorts/VAVwcDSxZoI?si=pAaMIzO97D4Q5MQP)
+
+---
 ## ⚙️ Features
 
 - ✅ Enable / Disable AI detection with a button  
